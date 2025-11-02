@@ -1,5 +1,5 @@
 from django import forms
-from .models import Producto
+from .models import Producto, Categoria, Etiqueta
 
 class ProductoForm(forms.ModelForm):
     class Meta:
@@ -16,16 +16,16 @@ class ProductoForm(forms.ModelForm):
 
 class CategoriaForm(forms.ModelForm):
     class Meta:
-        model = Producto
-        fields = ['nombre_categoria']
+        model = Categoria
+        fields = ['nombre']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre de la nueva categoría'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre de la nueva categoría'}),
         }
 
 class EtiquetaForm(forms.ModelForm):
     class Meta:
-        model = Producto
-        fields = ['nombre_etiqueta']
+        model = Etiqueta
+        fields = ['nombre']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre de la nueva etiqueta'}),
         }

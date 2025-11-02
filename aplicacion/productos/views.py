@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db import transaction, IntegrityError
-from .models import Producto, Categoria, Etiqueta, DetalleProductos
+from .models import Producto, Categoria, Etiqueta
 from .forms import ProductoForm, CategoriaForm, EtiquetaForm
 
 def index(request):
@@ -10,11 +10,28 @@ def index(request):
 # ==============  Views para productos ===============
 
 def lista_productos(request):
-    productos = Producto.objects.all().order_by('-id')
-    return render(request, 'productos/lista.html'), {'productos': productos}
+    q = request.GET.get('q', '').strip()
+    categoria_id = request.GET.get('categoria', '')
+    productos = Producto.objects.select_related('categoria').all().order_by('-id')
 
-def detalle_producto(request, producto_id):
-    producto = get_object_or_404(Producto, pk=producto_id)
+    if q:
+        from django.db.models import Q
+        productos = productos.filter(Q(nombre__icontains=q) | Q(descripcion__icontains=q))
+
+    if categoria_id:
+        productos = productos.filter(categoria_id=categoria_id)
+
+    categorias = Categoria.objects.all().order_by('nombre')
+    ctx = {
+        'productos': productos,
+        'q': q,
+        'categoria_id': categoria_id,
+        'categorias': categorias,
+    }
+    return render(request, 'productos/lista.html', ctx)
+
+def detalle_producto(request, id):
+    producto = get_object_or_404(Producto, pk=id)
     return render(request, 'productos/detalle.html', {'producto': producto})
 
 def crear_producto(request):
@@ -25,7 +42,7 @@ def crear_producto(request):
                 with transaction.atomic():
                     p = form.save()
                 messages.success(request, 'Producto creado exitosamente.')
-                return redirect('detalle_producto', producto_id=p.id)
+                return redirect('detalle_producto', id=p.id)
             except IntegrityError:
                 form.add_error(None, 'Ya existe un producto con el mismo nombre.')
         else:
@@ -34,22 +51,22 @@ def crear_producto(request):
         form = ProductoForm()
     return render(request, 'productos/crear.html', {'form': form})
 
-def actuarlizar_producto(request, producto_id):
-    producto = get_object_or_404(Producto, pk=producto_id)
+def editar_producto(request, id):
+    producto = get_object_or_404(Producto, pk=id)
     if request.method == 'POST':
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
             p = form.save()
             messages.success(request, 'Producto actualizado exitosamente.')
-            return redirect('detalle_producto', producto_id=p.id)
+            return redirect('detalle_producto', id=p.id)
         else:
             messages.error(request, 'Error al actualizar el producto.')
     else:
         form = ProductoForm(instance=producto)
-    return render(request, 'productos/editar.html', {'form': form}, {'producto': producto})
+    return render(request, 'productos/editar.html', {'form': form, 'producto': producto})
 
-def eliminar_producto(request, producto_id):
-    producto = get_object_or_404(Producto, pk=producto_id)
+def eliminar_producto(request, id):
+    producto = get_object_or_404(Producto, pk=id)
     if request.method == 'POST':
         nombre = producto.nombre
         producto.delete()
@@ -77,22 +94,22 @@ def crear_categoria(request):
         form = CategoriaForm()
     return render(request, 'categorias/crear_categoria.html', {'form': form})
 
-def actualizar_categoria(request, categoria_id):
-    categoria = get_object_or_404(Categoria, pk=categoria_id)
+def editar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, pk=id)
     if request.method == 'POST':
         form = CategoriaForm(request.POST, instance=categoria)
         if form.is_valid():
             form.save()
             messages.success(request, 'Categoría actualizada exitosamente.')
-            return redirect('lista_categorias', categoria_id=categoria.id)
+            return redirect('lista_categorias')
         else:
             messages.error(request, 'Error al actualizar la categoría.')
     else:
         form = CategoriaForm(instance=categoria)
     return render(request, 'categorias/editar_categoria.html', {'form': form})
 
-def eliminar_categoria(request, categoria_id):
-    categoria = get_object_or_404(Categoria, pk=categoria_id)
+def eliminar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, pk=id)
     if request.method == 'POST':
         nombre = categoria.nombre
         categoria.delete()
@@ -121,22 +138,22 @@ def crear_etiqueta(request):
         form = EtiquetaForm()
     return render(request, 'etiquetas/crear_etiqueta.html', {'form': form})
 
-def actualizar_etiqueta(request, etiqueta_id):
-    etiqueta = get_object_or_404(Etiqueta, pk=etiqueta_id)
+def editar_etiqueta(request, id):
+    etiqueta = get_object_or_404(Etiqueta, pk=id)
     if request.method == 'POST':
         form = EtiquetaForm(request.POST, instance=etiqueta)
         if form.is_valid():
             form.save()
             messages.success(request, 'Etiqueta actualizada exitosamente.')
-            return redirect('lista_etiquetas', etiqueta_id=etiqueta.id)
+            return redirect('lista_etiquetas')
         else:
             messages.error(request, 'Error al actualizar la etiqueta.')
     else:
         form = EtiquetaForm(instance=etiqueta)
-    return render(request, 'etiquetas/editar_etiqueta.html', {'form': form}, {'etiqueta': etiqueta})
+    return render(request, 'etiquetas/editar_etiqueta.html', {'form': form, 'etiqueta': etiqueta})
 
-def eliminar_etiqueta(request, etiqueta_id):
-    etiqueta = get_object_or_404(Etiqueta, pk=etiqueta_id)
+def eliminar_etiqueta(request, id):
+    etiqueta = get_object_or_404(Etiqueta, pk=id)
     if request.method == 'POST':
         nombre = etiqueta.nombre
         etiqueta.delete()

@@ -1,0 +1,74 @@
+/* Espaciados suaves y tarjetas aireadas */
+.card-like {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    padding: 1rem;
+}
+
+/* Tablas más legibles */
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #fafafa;
+}
+
+/* Mensajes apilados arriba */
+.messages-stack {
+    position: relative;
+}
+
+/* Inputs más cómodos */
+.form-control,
+.form-select {
+    border-radius: 8px;
+}
+
+/* Botones discretos */
+.btn-outline-secondary {
+    border-radius: 8px;
+}
+
+.hero-section {
+    background: linear-gradient(90deg, #f8f9fa 0%, #fff 100%);
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #e83e8c;
+    text-shadow: 1px 1px 3px rgba(232, 62, 140, 0.3);
+}
+
+.hero-description {
+    font-size: 1.05rem;
+    color: #6c757d;
+}
+
+.hero-image {
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
+}
+
+/* en pantallas grandes, dale un ancho cómodo */
+@media (min-width: 992px) {
+    .hero-image {
+        max-width: 520px;
+    }
+}
+
+.btn-primary {
+    background-color: #e83e8c;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #d63384;
+}

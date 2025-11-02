@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <!-- Texto principal -->
+            <div class="col-lg-6 col-md-7 mb-4 mb-md-0 text-center text-md-start">
+                <h1 class="hero-title fw-bold mb-3">
+                    Bienvenido a la tienda de productos <span class="text-dark">Sakura</span>
+                </h1>
+                <p class="hero-description text-muted mb-4">
+                    Encuentra una amplia variedad de productos de calidad, organizados por categorías y etiquetas.
+                    Gestiona tu catálogo de manera simple, rápida y moderna.
+                </p>
+                <a href="{% url 'lista_productos' %}" class="btn btn-primary btn-lg px-4">
+                    Ver productos
+                </a>
+            </div>
+
+            <!-- Imagen -->
+            <div class="col-lg-5 col-md-5 text-center">
+                <img src="{% static 'img/hero-image.jpg' %}" alt="Productos Sakura"
+                    class="img-fluid rounded shadow-sm hero-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
