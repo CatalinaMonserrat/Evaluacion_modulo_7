@@ -49,6 +49,7 @@ Accede a:
 | **Categorías** | CRUD de categorías | ![Categorías](img/lista_categorias.png) |
 | **Etiquetas** | CRUD de etiquetas | ![Etiquetas](img/lista_etiquetas.png) |
 | **Login** | Vista de inicio de sesión | ![Login](img/login.png) |
+| **Panel de administración** | Gestión de modelos desde la interfaz administrativa de Django | ![Panel de administración](img/admin_panel.png) |
 
 
 ## Modelos principales  
