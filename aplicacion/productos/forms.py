@@ -13,3 +13,19 @@ class ProductoForm(forms.ModelForm):
             'categoria': forms.Select(attrs={'class': 'form-select'}),
             'etiquetas': forms.SelectMultiple(attrs={'class': 'form-select'}),
         }
+
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['nombre_categoria']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre de la nueva categoría'}),
+        }
+
+class EtiquetaForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['nombre_etiqueta']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre de la nueva etiqueta'}),
+        }

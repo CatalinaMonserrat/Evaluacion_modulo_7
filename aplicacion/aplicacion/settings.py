@@ -1,5 +1,3 @@
-import pymysql
-pymysql.install_as_MySQLdb()
 import os
 from pathlib import Path
 
@@ -66,12 +64,12 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aplicacion_productos_db',          # Nombre de la base de datos
-        'USER': 'root',        # Usuario de MySQL
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'producto_db',          # Nombre de la base de datos
+        'USER': 'postgres',        # Usuario de porstgres
         'PASSWORD': 'root', # Contraseña
         'HOST': 'localhost',         # Servidor de MySQL
-        'PORT': '3306',              # Puerto por defecto
+        'PORT': '5432',              # Puerto por defecto
     }
 }
 
