@@ -1,16 +1,41 @@
 {% extends 'base.html' %}
-{% block title %}Detalle{% endblock %}
+{% block title %}Detalle del producto{% endblock %}
+
 {% block content %}
-<h2>{{ producto.nombre }}</h2>
-<ul class="list-group mb-3">
-    <li class="list-group-item"><strong>Categoría:</strong> {{ producto.categoria }}</li>
-    <li class="list-group-item"><strong>Precio:</strong> ${{ producto.precio }}</li>
-    <li class="list-group-item"><strong>Stock:</strong> {{ producto.stock }}</li>
-    <li class="list-group-item"><strong>Etiquetas:</strong>
-        {% for e in producto.etiquetas.all %} <span class="badge text-bg-secondary">{{ e.nombre }}</span>{% empty %}—{%
-        endfor %}
-    </li>
-</ul>
-<a class="btn btn-outline-secondary" href="{% url 'editar_producto' id=producto.id %}">Editar</a>
-<a class="btn btn-outline-primary" href="{% url 'lista_productos' %}">Volver</a>
+<div class="container mt-4">
+    <h2 class="mb-3">{{ producto.nombre }}</h2>
+
+    <ul class="list-group mb-4">
+        <li class="list-group-item">
+            <strong>Categoría:</strong> {{ producto.categoria }}
+        </li>
+        <li class="list-group-item">
+            <strong>Precio:</strong> ${{ producto.precio }}
+        </li>
+        <li class="list-group-item">
+            <strong>Stock:</strong> {{ producto.stock }}
+        </li>
+        <li class="list-group-item">
+            <strong>Etiquetas:</strong>
+            {% for e in producto.etiquetas.all %}
+            <span class="badge text-bg-secondary">{{ e.nombre }}</span>
+            {% empty %}
+            <span class="text-muted">Sin etiquetas</span>
+            {% endfor %}
+        </li>
+    </ul>
+
+    {% if producto.detalle %}
+    <h5>Detalles físicos</h5>
+    <ul class="list-group mb-4">
+        <li class="list-group-item"><strong>Altura:</strong> {{ producto.detalle.alto_cm }} cm</li>
+        <li class="list-group-item"><strong>Ancho:</strong> {{ producto.detalle.ancho_cm }} cm</li>
+        <li class="list-group-item"><strong>Largo:</strong> {{ producto.detalle.largo_cm }} cm</li>
+        <li class="list-group-item"><strong>Peso:</strong> {{ producto.detalle.peso_kg }} kg</li>
+    </ul>
+    {% endif %}
+
+    <a class="btn btn-outline-secondary" href="{% url 'editar_producto' id=producto.id %}">Editar</a>
+    <a class="btn btn-outline-primary" href="{% url 'lista_productos' %}">Volver</a>
+</div>
 {% endblock %}

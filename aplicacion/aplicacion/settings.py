@@ -16,6 +16,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'lista_productos'   # adonde redirige después de iniciar sesión
+LOGOUT_REDIRECT_URL = 'index'          # adonde redirige al cerrar sesión
 
 # Application definition
 
